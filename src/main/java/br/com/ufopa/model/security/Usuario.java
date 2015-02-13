@@ -32,6 +32,9 @@ public class Usuario implements Serializable {
 	@Column(name = "nome", length = 80)
 	private String nome;
 
+	@Column(name = "cpf", length = 20)
+	private String cpf;
+
 	@NotBlank
 	@Column(name = "username", length = 100)
 	private String username;
@@ -39,7 +42,16 @@ public class Usuario implements Serializable {
 	@NotBlank
 	@Column(name = "password", length = 200)
 	private String password;
-	
+
+	@Column(name = "telefone", length = 30)
+	private String telefone;
+
+	@Column(name = "email")
+	private String email;
+
+	@Column(name = "matricula", length = 20)
+	private long matricula;
+
 	@Transient
 	private String checkPassword;
 
@@ -98,35 +110,15 @@ public class Usuario implements Serializable {
 	public void setCheckPassword(String checkPassword) {
 		this.checkPassword = checkPassword;
 	}
-	
-	public boolean confirmaSenha(){
+
+	public boolean confirmaSenha() {
 		return this.password.equals(this.checkPassword);
 	}
-	
-	
-	public boolean confirmaGrupo(){
-		return (this.grupos.size()>0);
-	}
-	
-	@Transient
-	public String getRelacaoGrupos(){
-		String lista = "";
-		for(Grupo g : this.grupos){
-			lista += " " + g.getNome() + " ";
-		}
-		return lista;
-	}
-	
-	@Transient
-	public boolean isNovo() {
-		return id == null;
+
+	public boolean confirmaGrupo() {
+		return (this.grupos.size() > 0);
 	}
 
-	@Transient
-	public boolean isExistente() {
-		return !isNovo();
-	}
-	
 	public void adicionarItemVazio() {
 		Grupo grupo = new Grupo();
 		this.getGrupos().add(0, grupo);
@@ -137,6 +129,57 @@ public class Usuario implements Serializable {
 		if (item != null && item.getId() == null) {
 			this.grupos.remove(0);
 		}
+	}
+
+	public String getCpf() {
+		return cpf;
+	}
+
+	public void setCpf(String cpf) {
+		this.cpf = cpf;
+	}
+
+	public String getTelefone() {
+		return telefone;
+	}
+
+	public void setTelefone(String telefone) {
+		this.telefone = telefone;
+	}
+
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
+	}
+
+	public long getMatricula() {
+		return matricula;
+	}
+
+	public void setMatricula(long matricula) {
+		this.matricula = matricula;
+	}
+	
+	@Transient
+	public String getRelacaoGrupos() {
+		String lista = "";
+		for (Grupo g : this.grupos) {
+			lista += " " + g.getNome() + " ";
+		}
+		return lista;
+	}
+
+	@Transient
+	public boolean isNovo() {
+		return id == null;
+	}
+
+	@Transient
+	public boolean isExistente() {
+		return !isNovo();
 	}
 
 	@Override
