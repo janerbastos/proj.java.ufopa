@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://java.sun.com/jsf/core">
+
+<body>
+	<ui:composition template="/WEB-INF/templates/layout.xhtml">
+	    <ui:define name="titulo">Titulo</ui:define>
+		<ui:define name="corpo">
+			<h:form id="frm_...">
+			<h1>Titulo da Pagina</h1>
+			<p:toolbar>
+				<p:toolbarGroup>
+					<p:button value="Novo" outcome="..."/>
+					<p:commandButton value="Salvar" id="btnSalvar" update="@form" />
+				</p:toolbarGroup>
+				<p:toolbarGroup align="right">
+					<p:button value="Pesquisar" />
+				</p:toolbarGroup>
+			</p:toolbar>
+			<p:messages autoUpdate="true" closable="true"/>
+			<p:panelGrid columns="2" columnClasses="rotulo, campo" style="width:100%; margin-top:20px;" >
+				<!-- width:80% para campo grande -->
+				<!-- size=40 para campo medio -->
+				
+			</p:panelGrid>
+			</h:form>
+		</ui:define>
+	</ui:composition>
+</body>
+</html>

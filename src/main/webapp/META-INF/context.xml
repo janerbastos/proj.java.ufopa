@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Context>
+	<!-- disables storage of sessions across restarts -->
+	<Manager pathname="" />
+	<Resource name="BeanManager" auth="Container"
+		type="javax.enterprise.inject.spi.BeanManager" factory="org.jboss.weld.resources.ManagerObjectFactory" />
+
+	<!-- <Resource name="jdbc/psa" auth="Container" type="javax.sql.DataSource"
+		factory="org.apache.tomcat.jdbc.pool.DataSourceFactory"
+		validationQuery="SELECT 1" username="adminsite" password="*psa_2015#"
+		driverClassName="com.mysql.jdbc.Driver"
+		url="jdbc:mysql://192.168.0.158:3306/psa?autoReconnect=true" /> -->
+
+	<Resource name="jdbc/psa" auth="Container" type="javax.sql.DataSource"
+		factory="org.apache.tomcat.jdbc.pool.DataSourceFactory"
+		validationQuery="SELECT 1" username="adminsite" password="linux0"
+		driverClassName="com.mysql.jdbc.Driver"
+		url="jdbc:mysql://192.168.56.101:3306/psa?autoReconnect=true" />
+
+</Context>

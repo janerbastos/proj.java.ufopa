@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:p="http://primefaces.org/ui" xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:o="http://omnifaces.org/ui">
+
+<body>
+	<ui:composition template="/WEB-INF/templates/layout.xhtml">
+		<ui:define name="titulo">Cadastro de Usuários</ui:define>
+		<ui:define name="corpo">
+			<f:metadata>
+				<o:viewParam name="usuario" value="#{cadastroUsuario.usuario}" />
+				<f:event listener="#{cadastroUsuario.inicializar}" type="preRenderView" />
+			</f:metadata>
+			<h:form id="frm_usuario">
+				<h1>#{cadastroUsuario.editando ? 'Editando usuário' : 'Cadastrando novo usuário'}</h1>
+				<p:toolbar>
+					<p:toolbarGroup>
+						<p:button value="Novo" outcome="/manager/CadastroUsuario.xhtml" />
+						<p:commandButton value="Salvar" id="btnSalvar" update="@form" action="#{cadastroUsuario.salvar()}" />
+					</p:toolbarGroup>
+					<p:toolbarGroup align="right">
+						<p:button value="Pesquisar" outcome="/manager/PesquisaUsuario"/>
+					</p:toolbarGroup>
+				</p:toolbar>
+				<p:messages autoUpdate="true" closable="true" />
+				<p:panelGrid columns="2" columnClasses="rotulo, campo" style="width:100%; margin:20px 0;">
+
+					<p:outputLabel value="Nome comum:" for="nome" />
+					<p:inputText value="#{cadastroUsuario.usuario.nome}" id="nome" />
+
+					<p:outputLabel value="Nome de login:" for="login" />
+					<p:inputText value="#{cadastroUsuario.usuario.username}" id="login" />
+
+					<p:outputLabel value="Senha de acesso:" for="pws" rendered="#{!cadastroUsuario.usuario.existente}"/>
+					<p:password value="#{cadastroUsuario.usuario.password}" id="pws" rendered="#{!cadastroUsuario.usuario.existente}"/>
+
+					<p:outputLabel value="Confirma senha:" for="confirma" rendered="#{!cadastroUsuario.usuario.existente}"/>
+					<p:password value="#{cadastroUsuario.usuario.checkPassword}" id="confirma" rendered="#{!cadastroUsuario.usuario.existente}"/>
+				</p:panelGrid>
+
+				<h:outputLabel value="Relação de Grupos" style="font-weight: bold;" />
+				<p:dataTable var="grupo" value="#{cadastroUsuario.usuario.grupos}" paginator="true" rows="10"
+					paginatorPosition="bottom" id="tbGrupo">
+
+					<p:column headerText="Nome do Grupo" style="width:20%">
+						<h:outputText value="#{grupo.nome}" rendered="#{grupo.grupoAdicionado}" />
+						<p:autoComplete value="#{cadastroUsuario.grupoSelecionado}" completeMethod="#{cadastroUsuario.completaGrupo}"
+							var="grupo" itemLabel="#{grupo.nome}" itemValue="#{grupo}" forceSelection="true"
+							rendered="#{!grupo.grupoAdicionado}">
+							<p:ajax event="itemSelect" update="tbGrupo" listener="#{cadastroUsuario.carregaGrupoSelecionado}" />
+						</p:autoComplete>
+					</p:column>
+
+					<p:column headerText="Descrição">
+						<h:outputLabel value="#{grupo.descricao}" />
+					</p:column>
+
+					<p:column headerText="" style="width:10%; text-align:center;">
+						<p:commandButton icon="ui-icon-trash" title="Excluir" oncomplete="confirmacaoExclusao.show()" process="@this"
+							update=":frm_usuario:confirmacaoExclusaoDialog" rendered="#{grupo.grupoAdicionado}">
+							<f:setPropertyActionListener target="#{cadastroUsuario.grupoSelecionado}" value="#{grupo}" />
+						</p:commandButton>
+					</p:column>
+				</p:dataTable>
+
+				<p:confirmDialog header="Exclusão de grupo."
+					message="Tem certeza que deseja excluir a grupo #{cadastroUsuario.grupoSelecionado.nome}?"
+					widgetVar="confirmacaoExclusao" id="confirmacaoExclusaoDialog">
+					<p:button value="Não" onclick="confirmacaoExclusao.hide(); return false;" />
+					<p:commandButton value="Sim" oncomplete="confirmacaoExclusao.hide();" action="#{cadastroUsuario.excluir}"
+						process="@this" update=":frm_usuario:tbGrupo" />
+				</p:confirmDialog>
+			</h:form>
+		</ui:define>
+	</ui:composition>
+</body>
+</html>

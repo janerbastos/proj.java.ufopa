@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+<h:head>
+	<title>PSA - <ui:insert name="titulo">Projeto Saúde Alegria</ui:insert></title>
+	<h:outputStylesheet name="PortalCustom.css" library="css" />
+</h:head>
+<h:body>
+	<header id="portal-logo">
+		<h:link outcome="/Home">
+			<h1>Projeto Saúde Alegria</h1>
+		</h:link>
+	</header>
+	<h:form>
+		<p:menubar style="margin-top: -20px; margin-bottom: 20px">
+			<p:submenu label="Cadastros">
+				<p:menuitem value="Comunitário" outcome="/comunitario/CadastroComunitario" />
+				<p:menuitem value="Comunidade" outcome="/comunidade/CadastroComunidade" />
+				<p:menuitem value="Produtos"  outcome="/comunitario/CadastroProduto" />
+				<p:menuitem value="Especies Florestal" outcome="/reflorestamento/CadastroEspecieFlorestal" />
+				<p:menuitem value="Viveiro"  outcome="/reflorestamento/CadastroViveiro" />
+				<p:menuitem value="Fornecedor"  outcome="/reflorestamento/CadastroFornecedor" />
+			</p:submenu>
+			<p:submenu label="Consultas">
+				<p:menuitem value="Comunitários" outcome="/comunitario/CadastroComunitario"/>
+				<p:menuitem value="Comunidades" outcome="/comunidade/PesquisaComunidade"/>
+				<p:menuitem value="Especies Florestal" outcome="/reflorestamento/PesquisaEspecieFlorestal"/>
+				<p:menuitem value="Viveiros" outcome="/reflorestamento/PesquisaViveiro"/>
+				<p:menuitem value="Fornecedores" outcome="/reflorestamento/PesquisaFornecedor"/>
+			</p:submenu>
+			<p:submenu label="Produção">
+				<p:menuitem value="Atividade Produtiva" />
+			</p:submenu>
+			<p:submenu label="Reflorestamento">
+				<p:submenu label="Pedidos">
+					<p:menuitem value="Mudas p/ Comunitários" outcome="/reflorestamento/PedidoMudaComunitario"/>
+					<p:menuitem value="Mudas p/ Reflorestamento" outcome="/reflorestamento/PedidoMudaAreaComum"/>
+					<p:separator />
+					<p:menuitem value="Sementes" outcome="/reflorestamento/PedidoSemente"/>
+				</p:submenu>
+				<p:submenu label="Entregas">
+					<p:menuitem value="Mudas p/ Comunitários" outcome="/reflorestamento/PesquisaEntregaMudasComunitario"/>
+					<p:menuitem value="Mudas p/ Reflorestamento" outcome="/reflorestamento/PesquisaEntregaMudasComunidade"/>
+					<p:separator />
+					<p:menuitem value="Sementes" />
+				</p:submenu>
+				<p:separator />
+				<p:menuitem value="Reg. de Área Comunitário" outcome="/reflorestamento/RegistroAreaComunitario"/>
+			</p:submenu>
+			<p:submenu label="Sistema">
+				<p:menuitem outcome="/manager/CadastroUsuario" icon="ui-icon-suitcase" value="Gestor de usuários."/>
+				<p:menuitem value="#{seguranca.nomeUsuario}" icon="ui-icon-person"/>
+				<p:menuitem value="Sair" icon="ui-icon-power" url="/j_spring_security_logout"/>
+			</p:submenu>
+		</p:menubar>
+	</h:form>
+	<div id="portal-conteudo">
+		<ui:insert name="corpo" />
+	</div>
+	<footer> Projeto Saúde Alegria - PSA V.1.0-Build </footer>
+</h:body>
+</html>

@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:p="http://primefaces.org/ui" xmlns:f="http://java.sun.com/jsf/core">
+
+<body>
+	<ui:composition template="/WEB-INF/templates/layout.xhtml">
+		<ui:define name="titulo">Pesquisa Usuário</ui:define>
+		<ui:define name="corpo">
+
+			<f:metadata>
+				<f:viewParam name="rennder" />
+				<f:event listener="#{pesquisaUsuario.inicializar}" type="preRenderView"></f:event>
+			</f:metadata>
+
+			<h:form id="frm_pesquisa">
+				<h1>Pesquisa por Usuários</h1>
+				<p:toolbar>
+					<p:toolbarGroup>
+						<p:commandButton value="Pesquisar" id="btnPesquisar" update="@form" action="#{pesquisaUsuario.pesquisar}" />
+					</p:toolbarGroup>
+					<p:toolbarGroup align="right">
+						<p:button value="Novo" outcome="/manager/CadastroUsuario" />
+					</p:toolbarGroup>
+				</p:toolbar>
+				<p:messages autoUpdate="true" />
+				<p:panelGrid columns="2" columnClasses="rotulo, campo" style="width:100%; margin:20px 0;">
+					<p:outputLabel value="Nome do usuário:" for="nome" />
+					<p:inputText value="#{pesquisaUsuario.filtro.nome}" id="nome" />
+					<p:outputLabel value="Nome de login:" for="login" />
+					<p:inputText value="#{pesquisaUsuario.filtro.username}" id="login" />
+					<p:outputLabel value="Grupos" for="grupo" />
+					<p:selectOneMenu value="#{pesquisaUsuario.filtro.grupo}" id="grupo" filter="true">
+						<f:selectItem itemLabel="" />
+						<f:selectItems value="#{pesquisaUsuario.grupos}" var="grupo" itemLabel="#{grupo.nome}" itemValue="#{grupo}" />
+					</p:selectOneMenu>
+				</p:panelGrid>
+
+				<h:outputLabel value="Ralação de registros encontrados." style="font-weight:bold;" />
+
+				<p:dataTable var="usuario" value="#{pesquisaUsuario.usuarios}" paginator="true" rows="10" paginatorPosition="bottom" id="tbUsuario">
+
+					<p:column headerText="Nome do Usuário" style="width:50%">
+						<h:outputLabel value="#{usuario.nome}" />
+					</p:column>
+
+					<p:column headerText="Nome de login" style="width:20%">
+						<h:outputLabel value="#{usuario.username}" />
+					</p:column>
+
+					<p:column headerText="Grupos" style="width:20%; text-align:center;">
+						<h:outputLabel value="#{usuario.relacaoGrupos}" />
+					</p:column>
+
+					<p:column headerText="" style="width:10%; text-align:center;">
+						<p:button icon="ui-icon-pencil" outcome="/manager/CadastroUsuario" title="Editar">
+							<f:param value="#{usuario.id}" name="usuario" />
+						</p:button>
+						<p:commandButton icon="ui-icon-trash" title="Excluir" oncomplete="confirmacaoExclusao.show()" process="@this"
+							update=":frm_pesquisa:confirmacaoExclusaoDialog">
+							<f:setPropertyActionListener target="#{pesquisaUsuario.usuarioSelecionado}" value="#{usuario}" />
+						</p:commandButton>
+					</p:column>
+
+				</p:dataTable>
+				<p:confirmDialog header="Exclusão de grupo."
+					message="Tem certeza que deseja excluir a usuário #{pesquisaUsuario.usuarioSelecionado.nome}?"
+					widgetVar="confirmacaoExclusao" id="confirmacaoExclusaoDialog">
+					<p:button value="Não" onclick="confirmacaoExclusao.hide(); return false;" />
+					<p:commandButton value="Sim" oncomplete="confirmacaoExclusao.hide();" action="#{pesquisaUsuario.excluir}"
+						process="@this" update=":frm_pesquisa:tbUsuario" />
+				</p:confirmDialog>
+			</h:form>
+		</ui:define>
+	</ui:composition>
+</body>
+</html>
